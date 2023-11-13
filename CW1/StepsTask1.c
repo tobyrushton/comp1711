@@ -56,7 +56,7 @@ int main() {
             row_count++;
     }
 
-    printf("Number of records in the file: %d\n", row_count);
+    printf("Number of records in file: %d\n", row_count);
     fclose(file);
 
     // reopens file to be read
