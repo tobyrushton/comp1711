@@ -62,7 +62,7 @@ int main() {
     // reopens file to be read
     FILE *fp = open_file(filename, "r");
 
-    printf("Number of records in the file: %d\n", row_count);
+    printf("Number of records in file: %d\n", row_count);
 
     struct FITNESS_DATA {
         char date[11];
