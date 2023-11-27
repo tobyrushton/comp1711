@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include "FitnessDataStruct.h"
 
 // Struct moved to header file
@@ -44,9 +43,7 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
 // Complete the main function
 int main() {
-    bool running = true;
-
-    while(running) {
+   while(1) {
         char option;
         menu();
         option = getchar();
@@ -87,7 +84,7 @@ int main() {
             case 'q':
             case 'Q':
                 // exit loop
-                running = false;
+                return 0;
                 break;
             default:
                 // if unregistered input
