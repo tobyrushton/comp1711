@@ -16,12 +16,12 @@ void tokeniseRecord(const char *input, const char *delimiter, char *date, char *
 
 // Globals prototypes
 FILE *file;
-FITNESS_DATA stepCount[100];
+FITNESS_DATA stepCount[1000];
 int count;
 
 void menu(){
     printf("Menu Options:\n");
-    printf("A: Specify the filename to be imported \n");
+    printf("A: Specify the filename to be imported\n");
     printf("B: Display the total number of records in the file\n");
     printf("C: Find the date and time of the timeslot with the fewest steps\n");
     printf("D: Find the date and time of the timeslot with the largest number of steps\n");
@@ -104,7 +104,6 @@ void longest_continuous(FITNESS_DATA *streak){
 				currentStart = stepCount[i];
 			currentEnd = stepCount[i];
 			current++;
-			printf("current: %d\n", current);
 		} else {
 			if(current > longest){
 				streak[0] = currentStart;
