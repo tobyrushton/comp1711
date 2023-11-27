@@ -55,23 +55,34 @@ int main() {
         switch(option){
             case 'a':
             case 'A':
-                ;int success = open_file(file, stepCount);
+                ;int success = open_file();
                 if(success == 1) return success;
                 break;
             case 'b':
             case 'B':
+                printf("Total recods: %d\n", count);
                 break;
             case 'c':
             case 'C':
+                ;FITNESS_DATA lowest = find_lowest();
+                printf("Fewest steps: %s %s\n", lowest.date, lowest.time);
                 break;
             case 'd':
             case 'D':
+                ;FITNESS_DATA highest = find_highest();
+                printf("Largest steps: %s %s\n", highest.date, highest.time);
                 break;
             case 'e':
             case 'E':
+                ;int mean = find_mean();
+                printf("Mean step count: %d\n", mean);
                 break;
             case 'f':
             case 'F':
+                ;FITNESS_DATA streak[2];
+                longest_continuous(streak);
+                printf("Longest period start: %s %s\n", streak[0].date, streak[0].time);
+                printf("Longest period end: %s %s\n", streak[1].date, streak[1].time);
                 break;
             case 'q':
             case 'Q':
