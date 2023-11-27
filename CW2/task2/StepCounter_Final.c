@@ -55,7 +55,7 @@ int main() {
         switch(option){
             case 'a':
             case 'A':
-                ;int success = open_file(file);
+                ;int success = open_file(file, stepCount);
                 if(success == 1) return success;
                 break;
             case 'b':

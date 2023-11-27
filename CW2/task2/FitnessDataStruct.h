@@ -8,8 +8,11 @@
 typedef struct {
 	char date[11];
 	char time[6];
-	int steps;
+	char steps[5];
 } FITNESS_DATA;
+
+// Helper function prototypes
+void tokeniseRecord(const char *input, const char *delimiter, char *date, char *time, char *steps);
 
 void menu(){
     printf("Menu Options:\n");
@@ -23,16 +26,7 @@ void menu(){
     printf("Enter choice: ");
 }
 
-void populateArray(FITNESS_DATA *stepCount[], char fileName[]){
-	char line[100];
-
-	while(fgets(line, 100, fileName)){
-		tokeniseRecord(line, ",", stepCount[count].date, stepCount[count].time, stepCount[count].steps);
-		count++;
-	}
-}	
-
-int open_file(FILE *file) {
+int open_file(FILE *file, FITNESS_DATA *stepCount) {
 	char fileName[100];
 	// take the filename and attempt to open
     printf("Input filename: ");
@@ -44,12 +38,18 @@ int open_file(FILE *file) {
         return 1;
 	} else {
 		printf("File successfully loaded.\n");
-		populateArray(stepCount, fileName);
+		populateArray(stepCount, file);
 		return 0;
 	}
 }
 
-// Helper function prototypes
-void tokeniseRecord(const char *input, const char *delimiter, char *date, char *time, char *steps);
+void populateArray(FITNESS_DATA *stepCount, FILE *file){
+	char line[100];
+	int count = 0;
+	while(fgets(line, 100, file)){
+		tokeniseRecord(line, ",", 	stepCount[count].date, stepCount[count].time, stepCount[count].steps);
+		count++;
+	}
+}	
 
 #endif // FITNESS_DATA_STRUCT_H
