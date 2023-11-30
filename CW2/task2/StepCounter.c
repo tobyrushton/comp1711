@@ -58,7 +58,7 @@ int main() {
             }
             case 'b':
             case 'B':
-                printf("Total recods: %d\n", count);
+                printf("Total records: %d\n", count);
                 break;
             case 'c':
             case 'C':{
@@ -71,7 +71,7 @@ int main() {
                 FITNESS_DATA highest = find_highest();
                 printf("Largest steps: %s %s\n", highest.date, highest.time);
                 break;
-                }
+            }
             case 'e':
             case 'E':{
                 int mean = find_mean();
