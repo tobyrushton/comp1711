@@ -29,10 +29,9 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *s
     }
 }
 
-int open_file(char filename[], char method[2], FILE **file) {
+int open_file(char *filename, char *method, FILE **file) {
     *file = fopen(filename, method);
-
-    if(file == NULL){
+    if(!*file){
         printf("Error: invalid file\n");
         return 1;
     }
@@ -57,19 +56,26 @@ void sort(){
     } while(swapped == 1);
 }
 
-void populate_array(FILE *file){
+int populate_array(FILE *file){
     char line[100];
+
     while(fgets(line, 100, file)){
         // unsure as to why 100 size is needed but it wont copy otherwise
-        char date[100];
-        char time[5];
-        int steps;
+        char date[100] = "";
+        char time[5] = "";
+        int steps = -1;
 		tokeniseRecord(line, ',', date, time, &steps);
+        if(date == "" || time == "" || steps == -1){
+            printf("Error: invalid file\n");
+            return 1;
+        }
         strcpy(FitnessArray[count].date, date);
         strcpy(FitnessArray[count].time, time);
         FitnessArray[count].steps = steps;
         count++;
 	}
+
+    return 0;
 }
 
 void write_to_file(FILE *file){
@@ -88,7 +94,8 @@ int main() {
     int success = open_file(filename, "r", &file);
     if(success == 1) return success;
 
-    populate_array(file);
+    success = populate_array(file);
+    if(success == 1) return success;
     sort();
 
     FILE *output;
