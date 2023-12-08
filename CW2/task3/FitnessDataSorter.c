@@ -29,15 +29,15 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *s
     }
 }
 
-FILE *open_file(char filename[], char method[2]) {
-    FILE *file = fopen(filename, method);
+int open_file(char filename[], char method[2], FILE **file) {
+    *file = fopen(filename, method);
 
     if(file == NULL){
         printf("Error: invalid file\n");
-        exit(1);
+        return 1;
     }
 
-    return file;
+    return 0;
 }
 
 void sort(){
@@ -74,7 +74,7 @@ void populate_array(FILE *file){
 
 void write_to_file(FILE *file){
     for(int i =0; i < count; i++){
-        fprintf(file, "%s,%s,%d\n", FitnessArray[i].date, FitnessArray[i].time, FitnessArray[i].steps);
+        fprintf(file, "%s\t%s\t%d\n", FitnessArray[i].date, FitnessArray[i].time, FitnessArray[i].steps);
     }
 }
 
@@ -84,12 +84,16 @@ int main() {
     char filename[100];
     scanf("%s", filename);
 
-    FILE *file = open_file(filename, "r");
+    FILE *file;
+    int success = open_file(filename, "r", &file);
+    if(success == 1) return success;
 
     populate_array(file);
     sort();
 
-    FILE *output = open_file(strcat(filename, ".tsv"), "w+");
+    FILE *output;
+    success = open_file(strcat(filename, ".tsv"), "w+", &output);
+    if(success == 1) return success;
     write_to_file(output);
 
     fclose(file);
