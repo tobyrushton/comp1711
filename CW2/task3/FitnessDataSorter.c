@@ -56,6 +56,19 @@ void sort(){
     } while(swapped == 1);
 }
 
+int checkDate(char date[11]){
+    int indexes[2] = {5, 8};
+    int valid = 1; // defaults to being valid
+    char * str = date;
+    for(int i =0; i < 2; i++){
+        str = strchr(str + 1, '-');
+        if(str - date + 1 != indexes[i])
+            valid = 0;
+    }
+
+    return valid;
+}
+
 int populate_array(FILE *file){
     char line[100];
 
@@ -65,7 +78,14 @@ int populate_array(FILE *file){
         char time[5] = "";
         int steps = -1;
 		tokeniseRecord(line, ',', date, time, &steps);
-        if(date == "" || time == "" || steps == -1){
+        // checks that the data is valid
+        if(
+            date == "" || 
+            time == "" || 
+            steps == -1 || 
+            strchr(time, ':') - time + 1 != 3 ||
+            checkDate(date) != 1
+        ){
             printf("Error: invalid file\n");
             return 1;
         }
@@ -99,10 +119,13 @@ int main() {
     sort();
 
     FILE *output;
-    success = open_file(strcat(filename, ".tsv"), "w+", &output);
+    char *outFilename = strcat(filename, ".tsv");
+    success = open_file(outFilename, "w+", &output);
     if(success == 1) return success;
     write_to_file(output);
 
+    printf("Data sorted and written to %s\n", outFilename);
+    
     fclose(file);
     fclose(output);
 
