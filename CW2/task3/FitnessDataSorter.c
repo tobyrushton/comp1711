@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 // Define the struct for the fitness data
 typedef struct {
@@ -13,6 +14,9 @@ typedef struct {
 FitnessData FitnessArray[1000];
 int count = 0;
 
+int checkDate(char *date);
+int checkTime(char *time);
+
 // Function to tokenize a record
 void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *steps) {
     char *ptr = strtok(record, &delimiter);
@@ -23,7 +27,8 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *s
             strcpy(time, ptr);
             ptr = strtok(NULL, &delimiter);
             if (ptr != NULL) {
-                *steps = atoi(ptr);
+                if(!checkDate(ptr) && !checkTime(ptr))
+                    *steps = atoi(ptr);
             }
         }
     }
@@ -56,7 +61,15 @@ void sort(){
     } while(swapped == 1);
 }
 
-int checkDate(char date[11]){
+int checkTime(char *time){
+    int len = strlen(time);
+    if(len != 5 && len != 7) return 0;
+    return (strchr(time, ':') - time + 1 == 3);
+}
+
+int checkDate(char *date){
+    int len = strlen(date);
+    if(len != 10 && len != 12) return 0;
     int indexes[2] = {5, 8};
     int valid = 1; // defaults to being valid
     char * str = date;
@@ -83,8 +96,8 @@ int populate_array(FILE *file){
             date == "" || 
             time == "" || 
             steps == -1 || 
-            strchr(time, ':') - time + 1 != 3 ||
-            checkDate(date) != 1
+            !checkTime(time) ||
+            !checkDate(date)
         ){
             printf("Error: invalid file\n");
             return 1;
