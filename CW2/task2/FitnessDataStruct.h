@@ -19,6 +19,11 @@ FILE *file;
 FITNESS_DATA stepCount[1000];
 int count;
 
+// function to round to the closest integer
+int divRoundClosest(const int n, const int d){
+  return ((n < 0) == (d < 0)) ? ((n + d/2)/d) : ((n - d/2)/d);
+}
+
 void menu(){
     printf("Menu Options:\n");
     printf("A: Specify the filename to be imported\n");
@@ -88,7 +93,7 @@ int find_mean(){
 	for(int i = 0; i < count; i++)
 		total += stepCount[i].steps;
 
-	return total / count;
+	return divRoundClosest(total, count);
 }
 
 void longest_continuous(FITNESS_DATA *streak){
